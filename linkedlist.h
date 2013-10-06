@@ -1,6 +1,3 @@
-#include <stdlib.h>  //malloc
-#include <stdio.h>   //printf
-
 /* Beginning - int linked-list.  To be changed so caller can specify data type */
 
 typedef struct node_ {
