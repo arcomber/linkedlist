@@ -197,3 +197,96 @@ node_ptr reverse_r(node_ptr pivot, node_ptr backward) {
 	/* continue */
 	return reverse_r(rest, pivot);
 }
+
+node_ptr selection_sort(node_ptr head)
+{
+	node_ptr p, q, r, s, temp;
+
+	p = r = head;
+
+	while (p->next != NULL)
+	{
+		s = q = p->next;
+		while (q != NULL)
+		{
+			/* left value > right value */ 
+			if (p ->val > q->val)
+			{
+				if (p->next == q) /* if adjacent nodes */
+				{
+					if (p == head)  /* special case where we are at head */
+					{
+						p->next = q->next;
+						q->next = p;
+                        /* general swap - could use general swap function */
+						temp = p;
+						p = q;
+						q = temp;
+
+						head = p;
+						r = p;
+						s = q;
+						q = q->next;
+					}
+					else /* not at head */
+					{
+						p->next = q->next;
+						q->next = p;
+						r->next = q;
+
+						temp = p;
+						p = q;
+						q = temp;
+
+						s = q;
+						q = q->next;
+					}
+				}
+				else
+				{
+					if (p == head)
+					{
+						temp = q->next;
+						q->next = p->next;
+						p->next = temp;
+
+						s->next = p;
+
+						temp = p;
+						p = q;
+						q = temp;
+
+						s = q;
+						q = q->next;
+						head = p;
+					}
+					else
+					{
+						temp = q->next;
+						q->next = p->next;
+						p->next = temp;
+
+						r->next = q;
+						s->next = p;
+
+						temp = p;
+						p = q;
+						q = temp;
+
+						s = q;
+						q = q->next;
+					}
+				}
+			}
+			else
+			{
+				s = q;
+				q = q->next;
+			}
+		}
+		r = p;
+		p = p->next;
+	}
+	return head;
+}
+
