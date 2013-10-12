@@ -3,9 +3,16 @@
 
 #include "linkedlist.h"
 
+/* head will thus change so return new head */
+node_ptr push_front(node_ptr head, node_ptr to_add) {
+	if(head)
+		to_add->next = head;
+
+	return to_add;
+}
 
 /* this is like adding to a queue */
-void push_back(node_ptr head, node_ptr to_add) {
+node_ptr push_back(node_ptr head, node_ptr to_add) {
 	/* go to end of ll and append on end */
 	if(head) {
 		node_ptr curr = head;
@@ -16,6 +23,7 @@ void push_back(node_ptr head, node_ptr to_add) {
 	} else {
 		printf("push_back - no head element so cannot add\n");
 	}
+	return head;
 }
 
 /* We add node by num in ascending order */
@@ -30,23 +38,15 @@ void add_sorted_node(node_ptr head, node_ptr to_add) {
 	to_add->next = head;
 }
 
-/* TODO : make return type void to make consistent with push_back */
-node_ptr push_front(node_ptr head, node_ptr to_add) {
-	if(head)
-		to_add->next = head;
-
-	return to_add;
-}
-
-node_ptr find_by_value(node_ptr head, int value) {
+node_ptr find_by_value(node_ptr head, stackdata value) {
 	while(head && head->val != value)
 		head = head->next;
 
 	return head;
 }
 
-int length(node_ptr head) {
-	int len = 0;
+size_t length(node_ptr head) {
+	size_t len = 0;
 	while(head){
 		head = head->next;
 		++len;
@@ -54,7 +54,7 @@ int length(node_ptr head) {
 	return len;
 }
 
-node_ptr make_node(int value) {
+node_ptr make_node(stackdata value) {
 	node_ptr newnode = malloc(sizeof(node));
 	newnode->val = value;
 	newnode->next = NULL;
@@ -66,7 +66,6 @@ void free_list(node_ptr head) {
 	node_ptr next = 0;
 	while(curr) {
 		next = curr->next;
-		printf("About to free node %p, val %u\n", curr, curr->val);
 		free(curr);
 		curr = next;
 	}
@@ -94,7 +93,7 @@ node_ptr delete_node(node_ptr head, node_ptr to_delete) {
 
 node_ptr get_last_node(node_ptr head) {
 	while(head) {
-		if(head->next == '\0')
+		if(head->next == NULL)
 			break;
 
 		head = head->next;
@@ -104,15 +103,13 @@ node_ptr get_last_node(node_ptr head) {
 
 void printlist(node_ptr head) {
 	while(head) {
-		printf("node_ptr address: %p, value: %u\n", head, head->val);
 		head = head->next;
 	}
 }
 
-
 /* ex3.1 given ptr to ll, returns 1 if list sorted (asc), otherwise 0 */
 int is_sorted(node_ptr head) {
-	int tmp  = 0;
+	stackdata tmp  = 0;
 	while(head) {
 		if(head->val >= tmp)
 			tmp = head->val;
@@ -139,13 +136,11 @@ node_ptr reverse_nodes(node_ptr head) {
 	head->next = 0;
 
 	while(next != '\0') {
-		printf("curr=%p, val=%u, next ptr = %s\n", curr, curr->val, curr->next == NULL ? "null" : "valid");
 		nextnext = next->next;
 		next->next = curr;     /* point next to previous element */
 		curr = next;           /* move current to be next */
 		next = nextnext;       /* move next to next along */
 	}
-	printf("curr=%p, val=%u, next ptr = %s\n", curr, curr->val, curr->next == NULL ? "null" : "valid");
 	return curr;
 }
 
@@ -154,7 +149,6 @@ void reverse_print(node_ptr p) {
 		return;
 
 	reverse_print(p->next);
-	printf("curr=%p, val=%u, next ptr = %s\n", p, p->val, p->next == NULL ? "null" : "valid");
 }
 
 node_ptr reverse_r(node_ptr pivot, node_ptr backward) {
@@ -169,6 +163,7 @@ node_ptr reverse_r(node_ptr pivot, node_ptr backward) {
 	return reverse_r(rest, pivot);
 }
 
+/* ascending - swaps nodes */
 node_ptr selection_sort(node_ptr head)
 {
 	node_ptr p, q, r, s, temp;
@@ -261,3 +256,53 @@ node_ptr selection_sort(node_ptr head)
 	return head;
 }
 
+/* insert n after j - return new ll */
+node_ptr insert(node_ptr head, int n, int j) {
+	node_ptr curr = head, prev = NULL;
+	node_ptr newnode = make_node(n);
+	while(curr && j--) {
+		prev = curr;
+        curr = curr->next;
+	}
+	if(curr) { /* not at end */
+		if(prev == NULL) {
+			newnode->next = head;
+			head = newnode;
+		} else {
+			prev->next = newnode;
+			newnode->next = curr;
+		}
+	} else { /* push onto tail */
+		prev->next = newnode;
+	}
+	   
+	return head;
+}
+
+
+/* convert n to binary number and store in new ll, least significant bit at head 
+Just a practice item - not really a generally useful linked list function */
+node_ptr insert_binary(int n) {
+    node_ptr head = NULL, np;
+
+	while(n) {
+		np = make_node(n & 1 ? 1 : 0);
+		head = push_front(head, np);
+		n >>= 1;
+	}
+    return head;
+}
+
+/* convert binary from insert_binary function back to decimal */
+unsigned binary2decimal(node_ptr head) {
+	unsigned tmp, i;
+	tmp=i=0;
+	/* reverse list first */
+	head = reverse_r(head, 0);
+	while(head) {
+		tmp += head->val << i;
+		++i;
+		head = head->next;
+	}
+	return tmp;
+}
