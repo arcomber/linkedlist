@@ -156,28 +156,6 @@ node_ptr reverse_nodes(node_ptr head) {
 	return curr;
 }
 
-node_ptr reverse_nodes_angus_try(node_ptr head) {
-	node_ptr curr = 0, next = 0, nextnext = 0;
-
-	if(head == 0)
-		return head;
-
-	/*setup.  point curr to start of list.  next to next element and re-point next field of first element */
-	curr = head;
-	next = head->next;
-	head->next = 0;
-
-	while(next != '\0') {
-		printf("curr=%p, val=%u, next ptr = %s\n", curr, curr->val, curr->next == NULL ? "null" : "valid");
-		nextnext = next->next;
-		next->next = curr;     /*reverse link */
-		curr = next;
-		next = nextnext;
-	}
-	printf("curr=%p, val=%u, next ptr = %s\n", curr, curr->val, curr->next == NULL ? "null" : "valid");
-	return curr;
-}
-
 void reverse_print(node_ptr p) {
 	if(!p)
 		return;
