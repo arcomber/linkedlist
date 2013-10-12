@@ -43,8 +43,6 @@ int is_sorted(node_ptr head);
 
 node_ptr reverse_nodes(node_ptr head);
 
-node_ptr reverse_nodes_angus_try(node_ptr head);
-
 void reverse_print(node_ptr p);
 
 node_ptr reverse_r(node_ptr pivot, node_ptr backward);
