@@ -54,13 +54,6 @@ int length(node_ptr head) {
 	return len;
 }
 
-node_ptr make_head(int value) {
-	node_ptr head = malloc(sizeof(node));
-	head->val = value;
-	head->next = '\0';
-	return head;
-}
-
 node_ptr make_node(int value) {
 	node_ptr newnode = malloc(sizeof(node));
 	newnode->val = value;
