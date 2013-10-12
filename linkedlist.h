@@ -22,9 +22,8 @@ node_ptr find_by_value(node_ptr head, int value);
 
 /* return length of ll */
 int length(node_ptr head);
-/* TODO - should only need make_node to do this. create head element */
-node_ptr make_head(int value);
-/* TODO - consider hiding this - implementation details???  create a linked list node */
+
+/* create a linked list node */
 node_ptr make_node(int value);
 
 /* free all nodes */
