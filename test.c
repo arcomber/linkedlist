@@ -32,7 +32,7 @@ int main() {
 	//head = push_front(head, newnode);
     //head = push_front(head, make_node(3));
 	//head = push_front(head, make_node(4));
-	printf("length of linked list: %u\n", length(head));
+	printf("length of linked list: %lu\n", length(head));
 
 	printf("linked list is %s\n", is_sorted(head) == 1 ? "sorted" : "not sorted");
 
